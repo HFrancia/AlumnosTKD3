@@ -223,5 +223,11 @@ th {
 }
 
 .button:hover {
-    background-color: #333;
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #333; /*Al poner el cursor sobre el boton, se cambia al color ele*/
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
 }

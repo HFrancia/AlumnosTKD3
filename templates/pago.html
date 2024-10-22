@@ -8,18 +8,19 @@
 </head>
 <body>
     <header>
-        <h1>Registrar Pago</h1>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
+        <h1>Capturar Pago(s)</h1>
     </header>
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Inicio</a></li>
             <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
-            <li><a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Detalle del Alumno</a></li>
-            <li><a href="{{ url_for('pagos', alumno_id=alumno.id) }}">Ver Pagos</a></li>
+            <li><a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Actualizar datos del Alumno</a></li>
+            <li><a href="{{ url_for('pagos', alumno_id=alumno.id) }}">Consultar Pagos</a></li>
         </ul>
     </nav>
     <main>
-        <h2>Registrar Pago para {{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</h2>
+        <h2>Capturar Pago de: {{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</h2>
         <form id="pago-form">
             <input type="hidden" name="alumno_id" value="{{ alumno.id }}">
 

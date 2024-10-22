@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const editarForm = document.getElementById('editar-form');
     const pagoForm = document.getElementById('pago-form');
     const eliminarBotones = document.querySelectorAll('.eliminar-alumno');
+    
 
     if (registroForm) {
         registroForm.addEventListener('submit', function(e) {

@@ -8,14 +8,15 @@
 </head>
 <body>
     <header>
-        <h1>Pagos del Alumno</h1>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
+        <h1>Historial de Pagos del Alumno</h1>
     </header>
     <nav>
         <ul>
-            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('index') }}">Regresar al Inicio</a></li>
             <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
-            <li><a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Detalle del Alumno</a></li>
-            <li><a href="{{ url_for('pago', alumno_id=alumno.id) }}">Registrar Pago</a></li>
+            <li><a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Actualizar datos del Alumno</a></li>
+            <li><a href="{{ url_for('pago', alumno_id=alumno.id) }}">Regresar a Capturar Pago</a></li>
         </ul>
     </nav>
     <main>

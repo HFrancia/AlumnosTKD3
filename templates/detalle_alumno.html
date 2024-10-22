@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar de  Alumno</title>
+    <title>Actualizar Alumno</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <header>
         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logotipo de la escuela" class="logo" width = "800" height="340">
-        <h1>Actualizar de Alumno</h1>
+        <h1>Actualizar informacion Alumno</h1>
     </header>
     <nav> 
         <ul>
-            <li><a href="{{ url_for('index') }}">Inicio</a></li>
-            <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
+            <li><a href="{{ url_for('index') }}">Regresar al Inicio</a></li>
+            <li><a href="{{ url_for('lista_alumnos') }}">Regresar al listado de Alumnos</a></li>
             <li><a href="{{ url_for('pago', alumno_id=alumno.id) }}">Registrar Pago</a></li>
-            <li><a href="{{ url_for('pagos', alumno_id=alumno.id) }}">Ver Pagos</a></li>
+            <li><a href="{{ url_for('pagos', alumno_id=alumno.id) }}">Consultar Pagos</a></li>
         </ul>
     </nav>
     <main>
