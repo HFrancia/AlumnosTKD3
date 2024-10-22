@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, jsonify, send_file
-from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey, Float, JSON, func
+from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from datetime import datetime, date
+from datetime import date, datetime
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
@@ -138,21 +138,14 @@ def pedidos_hoy():
     finally:
         session.close()
 
-@app.route('/pedidos', methods=['GET'])
+@app.route('/pedidos')
 def pedidos():
     session = Session()
     try:
         pedidos = session.query(Pedido).all()
-        return jsonify([{
-            "fecha": pedido.fecha.strftime('%Y-%m-%d'),
-            "nombre_solicitante": pedido.nombre_solicitante,
-            "tipo_producto": pedido.tipo_producto,
-            "talla": pedido.talla,
-            "color": pedido.color,
-            "cantidad": pedido.cantidad
-        } for pedido in pedidos])
+        return render_template('pedidos.html', pedidos=pedidos)
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return f"Error: {str(e)}"
     finally:
         session.close()
 
@@ -213,12 +206,12 @@ def eliminar_pedido(pedido_id):
     session = Session()
     try:
         pedido = session.query(Pedido).get(pedido_id)
-        if pedido and pedido.fecha == date.today():
+        if pedido:
             session.delete(pedido)
             session.commit()
             return jsonify({"success": True, "message": "Pedido eliminado correctamente"})
         else:
-            return jsonify({"success": False, "message": "Pedido no encontrado o no es de hoy"}), 404
+            return jsonify({"success": False, "message": "Pedido no encontrado"}), 404
     except Exception as e:
         session.rollback()
         return jsonify({"success": False, "message": f"Error: {str(e)}"}), 500

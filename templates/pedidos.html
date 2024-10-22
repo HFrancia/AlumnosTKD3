@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todos los Pedidos</title>
+    <title>Historial de Pedidos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <header>
-        <h1>Todos los Pedidos</h1>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
+        <h1>Historial de Pedidos</h1>
     </header>
     <nav>
         <ul>
@@ -17,6 +18,7 @@
         </ul>
     </nav>
     <main>
+        <div id="notificacion" class="notificacion"></div>
         <table id="tabla-pedidos">
             <thead>
                 <tr>
@@ -26,16 +28,35 @@
                     <th>Talla</th>
                     <th>Color</th>
                     <th>Cantidad</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Los datos de los pedidos se insertarán aquí dinámicamente -->
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ pedido.fecha.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ pedido.nombre_solicitante }}</td>
+                    <td>{{ pedido.tipo_producto }}</td>
+                    <td>{{ pedido.talla }}</td>
+                    <td>{{ pedido.color or 'N/A' }}</td>
+                    <td>{{ pedido.cantidad }}</td>
+                    <td>
+                        <button class="eliminar-pedido" data-id="{{ pedido.id }}">Eliminar</button>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
-
         <a href="{{ url_for('generar_reporte_pedidos_excel') }}" class="button">Generar Reporte Excel</a>
         <a href="{{ url_for('generar_reporte_pedidos_pdf') }}" class="button">Generar Reporte PDF</a>
     </main>
+    <div id="confirmacion-modal" class="modal">
+        <div class="modal-content">
+            <p>¿Estás seguro de que quieres eliminar este pedido?</p>
+            <button id="confirmar-eliminar">Sí, eliminar</button>
+            <button id="cancelar-eliminar">Cancelar</button>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='js/pedidos.js') }}"></script>
 </body>
 </html>

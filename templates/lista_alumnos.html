@@ -25,7 +25,7 @@
                     <th>No Afiliación</th>
                     <th>Teléfono</th>
                     <th>Estatus</th>
-                    <th>Desalle Alumno</th>
+                    <th>Actualizar Alumno</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,7 +36,7 @@
                     <td>{{ alumno.telefono }}</td>
                     <td>{{ alumno.estatus }}</td>
                     <td>
-                        <a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Ver detalles</a>
+                        <a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Actualizar Datos</a>
                         <!-- <button class="eliminar-alumno" data-id="{{ alumno.id }}" >Eliminar</button> -->
                     </td>
                 </tr>
