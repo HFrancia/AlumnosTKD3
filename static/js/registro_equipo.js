@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const productosOptions = {
         espinillera: {
-            tallas: ['CH', 'MD', 'LG'],
-            colores: ['blanco', 'azul', 'negro']
+            tallas: ['','CH', 'MD', 'LG'],
+            colores: ['','blanco', 'azul', 'negro']
         },
         cabezal: {
             tallas: ['CH', 'MD', 'LG'],
