@@ -9,36 +9,36 @@ document.addEventListener('DOMContentLoaded', function() {
             colores: ['','blanco', 'azul', 'negro']
         },
         cabezal: {
-            tallas: ['CH', 'MD', 'LG'],
-            colores: ['blanco', 'azul', 'negro']
+            tallas: ['','CH', 'MD', 'LG'],
+            colores: ['','blanco', 'azul', 'negro']
         },
         antebracera: {
-            tallas: ['CH', 'MD', 'LG'],
-            colores: ['blanco', 'azul', 'negro']
+            tallas: ['','CH', 'MD', 'LG'],
+            colores: ['','blanco', 'azul', 'negro']
         },
         codera: {
-            tallas: ['CH', 'MD', 'LG'],
-            colores: ['blanco', 'azul', 'negro']
+            tallas: ['','CH', 'MD', 'LG'],
+            colores: ['','blanco', 'azul', 'negro']
         },
         peto: {
-            tallas: ['CH', 'MD', 'LG'],
-            colores: ['blanco', 'azul', 'negro']
+            tallas: ['','CH', 'MD', 'LG'],
+            colores: ['','blanco', 'azul', 'negro']
         },
         empeineras: {
-            tallas: ['CH', 'MD', 'LG'],
-            colores: ['blanco', 'azul', 'negro']
+            tallas: ['','CH', 'MD', 'LG'],
+            colores: ['','blanco', 'azul', 'negro']
         },
         guantillas: {
-            tallas: ['CH', 'MD', 'LG'],
-            colores: ['blanco', 'azul', 'negro']
+            tallas: ['','CH', 'MD', 'LG'],
+            colores: ['','blanco', 'azul', 'negro']
         },
         mica: {
-            tallas: ['Unitalla'],
+            tallas: ['','Unitalla'],
             colores: []
         },
         uniforme: {
-            tallas: ['00', '0', '1', '2', '3', '4', '5', '6'],
-            colores: []
+            tallas: ['','000','00', '0', '1', '2', '3', '4', '5', '6'],
+            colores: ['','Cuello Blanco','Cuello Rojo/Negro','Cuello Negro']
         }
     };
 
