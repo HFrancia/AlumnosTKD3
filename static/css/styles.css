@@ -153,3 +153,12 @@ th {
 #agregar-producto {
     margin-bottom: 20px;
 }
+
+.alerta {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    color: #721c24;
+    background-color: #f8d7da;
+}
