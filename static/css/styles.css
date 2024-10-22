@@ -163,7 +163,7 @@ th {
     background-color: #f8d7da;
 }
 
-/* Agregar estos estilos a tu archivo CSS existente */
+/* Agregar estos estilos a tu archivo CSS existente V3*/
 
 .logo {
     max-width: 200px;
@@ -216,12 +216,12 @@ th {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 20px;
-    background-color: #007bff;
+    background-color: #333;
     color: white;
     text-decoration: none;
     border-radius: 5px;
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #333;
 }
