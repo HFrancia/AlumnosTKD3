@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Alumnos</title>
+    <title>Lista de pagos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <header>
         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logotipo de la escuela" class="logo" width = "800" height="341">
-        <h1>Lista de Alumnos</h1>
+        <h1>Lista de pagos</h1>
     </header>
     <nav>
         <ul>
@@ -29,15 +29,14 @@
                 </tr>
             </thead>
             <tbody>
-                {% for alumno in alumnos %}
+                {% for pago in pagos %}
                 <tr>
-                    <td>{{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</td>
-                    <td>{{ alumno.numafiliacion }}</td>
-                    <td>{{ alumno.telefono }}</td>
-                    <td>{{ alumno.estatus }}</td>
+                    <td>{{ pagos.fecha}}</td>
+                    <td>{{ pagos.monto}}</td>
+                    <td>{{ pagos.concepto}}</td>
                     <td>
-                        <a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Ver detalles</a>
-                        <!-- <button class="eliminar-alumno" data-id="{{ alumno.id }}" >Eliminar</button> -->
+                        <!-- <a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Ver detalles</a>
+                        <button class="eliminar-alumno" data-id="{{ alumno.id }}" >Eliminar</button> -->
                     </td>
                 </tr>
                 {% endfor %}

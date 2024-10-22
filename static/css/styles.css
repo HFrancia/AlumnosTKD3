@@ -12,6 +12,13 @@ header {
     padding: 1rem;
 }
 
+.logo {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: bottom;
+}
+
 nav {
     background-color: #f4f4f4;
     padding: 0.5rem;

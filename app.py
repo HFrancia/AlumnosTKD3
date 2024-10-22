@@ -48,6 +48,10 @@ Base.metadata.create_all(engine)
 def index():
     return render_template('index.html')
 
+@app.route('/')
+def registro_pagos():
+    return render_template('registro_pagos.html')
+
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':

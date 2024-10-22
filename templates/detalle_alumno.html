@@ -8,17 +8,19 @@
 </head>
 <body>
     <header>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logotipo de la escuela" class="logo" width = "800" height="341">
         <h1>Detalle de Alumno</h1>
     </header>
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Inicio</a></li>
             <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
+            <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
         </ul>
     </nav>
     <main>
         <h2>{{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</h2>
-        <p>Estatus: {{ alumno.estatus }}</p>
+        
         <form id="editar-form">
             <input type="hidden" name="id" value="{{ alumno.id }}">
 
