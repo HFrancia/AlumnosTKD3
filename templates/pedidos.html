@@ -29,10 +29,9 @@
                     <th>Fecha</th>
                     <th>Solicitante</th>
                     <th>Producto</th>
-                    <th>Tallas</th>
+                    <th>Talla</th>
                     <th>Color</th>
                     <th>Cantidad</th>
-                    <th>Costo Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,10 +40,9 @@
                     <td>{{ pedido.fecha }}</td>
                     <td>{{ pedido.nombre_solicitante }}</td>
                     <td>{{ pedido.tipo_producto }}</td>
-                    <td>{{ pedido.tallas|join(', ') }}</td>
+                    <td>{{ pedido.talla }}</td>
                     <td>{{ pedido.color or 'N/A' }}</td>
                     <td>{{ pedido.cantidad }}</td>
-                    <td>${{ "%.2f"|format(pedido.costo_total) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

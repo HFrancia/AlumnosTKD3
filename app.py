@@ -14,6 +14,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image as PDFImage
 from io import BytesIO
+import json
 
 app = Flask(__name__)
 
@@ -54,10 +55,9 @@ class Pedido(Base):
     fecha = Column(Date, nullable=False)
     nombre_solicitante = Column(String(100), nullable=False)
     tipo_producto = Column(String(50), nullable=False)
-    tallas = Column(JSON, nullable=False)
+    talla = Column(String(10), nullable=False)
     color = Column(String(50))
     cantidad = Column(Integer, nullable=False)
-    costo_total = Column(Float, nullable=False)
 
 Base.metadata.create_all(engine)
 
@@ -100,18 +100,19 @@ def registro_equipo():
     if request.method == 'POST':
         session = Session()
         try:
-            nuevo_pedido = Pedido(
-                fecha=datetime.now().date(),
-                nombre_solicitante=request.form['nombre_solicitante'],
-                tipo_producto=request.form['tipo_producto'],
-                tallas=request.form.getlist('tallas'),
-                color=request.form.get('color'),
-                cantidad=sum([int(request.form.get(f'cantidad_{talla}', 0)) for talla in request.form.getlist('tallas')]),
-                costo_total=float(request.form['costo_total'])
-            )
-            session.add(nuevo_pedido)
+            data = request.json
+            for producto in data['productos']:
+                nuevo_pedido = Pedido(
+                    fecha=datetime.now().date(),
+                    nombre_solicitante=data['nombre_solicitante'],
+                    tipo_producto=producto['tipo'],
+                    talla=producto['talla'],
+                    color=producto.get('color'),
+                    cantidad=producto['cantidad']
+                )
+                session.add(nuevo_pedido)
             session.commit()
-            return jsonify({"success": True, "message": "Pedido registrado correctamente"})
+            return jsonify({"success": True, "message": "Pedidos registrados correctamente"})
         except Exception as e:
             session.rollback()
             return jsonify({"success": False, "message": f"Error: {str(e)}"})

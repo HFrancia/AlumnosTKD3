@@ -134,3 +134,22 @@ th {
 #buscar-pedidos-form button {
     margin-right: 10px;
 }
+
+/* Add these styles to the existing CSS file V2*/
+
+.producto-form {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.producto-form select,
+.producto-form input {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#agregar-producto {
+    margin-bottom: 20px;
+}
