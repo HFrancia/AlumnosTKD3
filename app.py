@@ -369,10 +369,9 @@ def generar_reporte_pedidos_excel():
                 'Fecha': p.fecha,
                 'Solicitante': p.nombre_solicitante,
                 'Producto': p.tipo_producto,
-                'Tallas': ', '.join(p.tallas),
+                'Talla': p.talla,
                 'Color': p.color or 'N/A',
-                'Cantidad': p.cantidad,
-                'Costo Total': p.costo_total
+                'Cantidad': p.cantidad
             } for p in pedidos
         ])
 
@@ -427,7 +426,6 @@ def generar_reporte_pedidos_excel():
     finally:
         session.close()
 
-#Generación de reportes pdf
 @app.route('/generar_reporte_pedidos_pdf')
 def generar_reporte_pedidos_pdf():
     session = Session()
@@ -443,14 +441,15 @@ def generar_reporte_pedidos_pdf():
         elements.append(logo)
 
         # Create table data
-        data = [['Producto', 'Tallas', 'Color', 'Cantidad', 'Costo Total']]
+        data = [['Fecha', 'Solicitante', 'Producto', 'Talla', 'Color', 'Cantidad']]
         for pedido in pedidos:
             data.append([
+                pedido.fecha.strftime('%Y-%m-%d'),
+                pedido.nombre_solicitante,
                 pedido.tipo_producto,
-                ', '.join(pedido.tallas),
+                pedido.talla,
                 pedido.color or 'N/A',
-                pedido.cantidad,
-                f"${pedido.costo_total:.2f}"
+                pedido.cantidad
             ])
 
         # Create table
