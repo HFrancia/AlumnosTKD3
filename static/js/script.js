@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Ocurrió un error al eliminar al alumno.');
+                        alert('Ocurrió un error al eliminar al alumno.');  
                     });
                 }
             });
