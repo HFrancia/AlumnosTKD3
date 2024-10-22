@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registro-equipo-form');
     const productosContainer = document.getElementById('productos-container');
     const agregarProductoBtn = document.getElementById('agregar-producto');
+    const tablaPedidosHoy = document.getElementById('tabla-pedidos-hoy');
 
     const productosOptions = {
         espinillera: {
@@ -64,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const tallaSelect = document.createElement('select');
         tallaSelect.name = 'talla';
-        tallaSelect.required = true;
+        tallaSelect.required =   true;
         tallaSelect.style.display = 'none';
 
         const colorSelect = document.createElement('select');
@@ -170,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert(data.message);
                 form.reset();
                 document.querySelectorAll('.producto-form').forEach(form => form.remove());
+                cargarPedidosHoy();
             } else {
                 alert(data.message);
             }
@@ -179,4 +181,58 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Ocurrió un error al procesar la solicitud.');
         });
     });
+
+    function cargarPedidosHoy() {
+        fetch('/pedidos_hoy')
+            .then(response => response.json())
+            .then(pedidos => {
+                const tbody = tablaPedidosHoy.querySelector('tbody');
+                tbody.innerHTML = '';
+                pedidos.forEach(pedido => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pedido.nombre_solicitante}</td>
+                        <td>${pedido.tipo_producto}</td>
+                        <td>${pedido.talla}</td>
+                        <td>${pedido.color || 'N/A'}</td>
+                        <td>${pedido.cantidad}</td>
+                        <td><button class="eliminar-pedido" data-id="${pedido.id}">Eliminar</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error al cargar los pedidos de hoy.');
+            });
+    }
+
+    tablaPedidosHoy.addEventListener('click', function(e) {
+        if (e.target.classList.contains('eliminar-pedido')) {
+            const pedidoId = e.target.getAttribute('data-id');
+            eliminarPedido(pedidoId);
+        }
+    });
+
+    function eliminarPedido(pedidoId) {
+        fetch(`/eliminar_pedido/${pedidoId}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                cargarPedidosHoy();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ocurrió un error al eliminar el pedido.');
+        });
+    }
+
+    // Cargar pedidos de hoy al iniciar la página
+    cargarPedidosHoy();
 });

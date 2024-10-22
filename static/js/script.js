@@ -64,15 +64,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert(data.message);
                     pagoForm.reset();
+                    mostrarAlerta(data.message);
+                    //pagoForm.reset();
                 } else {
-                    alert(data.message);
+                    mostrarAlerta(data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Ocurrió un error al realizar el pago.');
+                mostrarAlerta('Ocurrió un error al realizar el pago.');
             });
         });
     }

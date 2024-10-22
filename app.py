@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, jsonify, send_file
-from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey, Float, JSON
+from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey, Float, JSON, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from datetime import datetime
+from datetime import datetime, date
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
@@ -14,7 +14,6 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image as PDFImage
 from io import BytesIO
-import json
 
 app = Flask(__name__)
 
@@ -64,7 +63,6 @@ Base.metadata.create_all(engine)
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -120,19 +118,41 @@ def registro_equipo():
             session.close()
     return render_template('registro_equipo.html')
 
+# """
+@app.route('/pedidos_hoy', methods=['GET'])
+def pedidos_hoy():
+    session = Session()
+    try:
+        pedidos = session.query(Pedido).filter(Pedido.fecha == date.today()).all()
+        return jsonify([{
+            "id": pedido.id,
+            "fecha": pedido.fecha.strftime('%Y-%m-%d'),
+            "nombre_solicitante": pedido.nombre_solicitante,
+            "tipo_producto": pedido.tipo_producto,
+            "talla": pedido.talla,
+            "color": pedido.color,
+            "cantidad": pedido.cantidad
+        } for pedido in pedidos])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        session.close()
+
 @app.route('/pedidos', methods=['GET'])
 def pedidos():
     session = Session()
     try:
-        fecha_busqueda = request.args.get('fecha')
-        if fecha_busqueda:
-            fecha_busqueda = datetime.strptime(fecha_busqueda, '%Y-%m-%d').date()
-            pedidos = session.query(Pedido).filter(Pedido.fecha == fecha_busqueda).all()
-        else:
-            pedidos = session.query(Pedido).all()
-        return render_template('pedidos.html', pedidos=pedidos)
+        pedidos = session.query(Pedido).all()
+        return jsonify([{
+            "fecha": pedido.fecha.strftime('%Y-%m-%d'),
+            "nombre_solicitante": pedido.nombre_solicitante,
+            "tipo_producto": pedido.tipo_producto,
+            "talla": pedido.talla,
+            "color": pedido.color,
+            "cantidad": pedido.cantidad
+        } for pedido in pedidos])
     except Exception as e:
-        return f"Error: {str(e)}"
+        return jsonify({"error": str(e)}), 500
     finally:
         session.close()
 
@@ -188,6 +208,23 @@ def eliminar_alumno(id):
     finally:
         session.close()
 
+@app.route('/eliminar_pedido/<int:pedido_id>', methods=['DELETE'])
+def eliminar_pedido(pedido_id):
+    session = Session()
+    try:
+        pedido = session.query(Pedido).get(pedido_id)
+        if pedido and pedido.fecha == date.today():
+            session.delete(pedido)
+            session.commit()
+            return jsonify({"success": True, "message": "Pedido eliminado correctamente"})
+        else:
+            return jsonify({"success": False, "message": "Pedido no encontrado o no es de hoy"}), 404
+    except Exception as e:
+        session.rollback()
+        return jsonify({"success": False, "message": f"Error: {str(e)}"}), 500
+    finally:
+        session.close()
+
 @app.route('/pago/<int:alumno_id>', methods=['GET', 'POST'])
 def pago(alumno_id): #redefinir variable a setpagos para identificar que es el metodo para aplicar pagos
     session = Session()
@@ -221,7 +258,8 @@ def pagos(alumno_id): #redefinit variable a getpagos para identificar que es el 
         return f"Error: {str(e)}"
     finally:
         session.close()
-    
+
+## reporte en excel    
 @app.route('/generar_reporte')
 def generar_reporte():
     session = Session()
@@ -426,6 +464,75 @@ def generar_reporte_pedidos_excel():
     finally:
         session.close()
 
+@app.route('/generar_reporte_pedidos_hoy_excel')
+def generar_reporte_pedidos_hoy_excel():
+    session = Session()
+    try:
+        pedidos = session.query(Pedido).filter(Pedido.fecha == date.today()).all()
+        
+        df = pd.DataFrame([
+            {
+                'Fecha': p.fecha,
+                'Solicitante': p.nombre_solicitante,
+                'Producto': p.tipo_producto,
+                'Talla': p.talla,
+                'Color': p.color or 'N/A',
+                'Cantidad': p.cantidad
+            } for p in pedidos
+        ])
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Reporte de Pedidos de Hoy"
+
+        # Add logo
+        img = Image('static/img/logo.png')
+        img.width = 300
+        img.height = 100
+        ws.add_image(img, 'A1')
+
+        # Merge cells for the logo
+        ws.merge_cells('A1:D4')
+
+        # Add generation date
+        ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
+
+        # Write headers
+        headers = list(df.columns)
+        for col, header in enumerate(headers, start=1):
+            cell = ws.cell(row=5, column=col, value=header)
+            cell.font = Font(color="FFFFFF", bold=True)
+            cell.fill = PatternFill(start_color="000080", end_color="000080", fill_type="solid")
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+
+        # Write data
+        for r, row in enumerate(df.values, start=6):
+            for c, value in enumerate(row, start=1):
+                ws.cell(row=r, column=c, value=value)
+
+        # Adjust column widths
+        for column in ws.columns:
+            max_length = 0
+            column_letter = get_column_letter(column[0].column)
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(cell.value)
+                except:
+                    pass
+            adjusted_width = (max_length + 2) * 1.2
+            ws.column_dimensions[column_letter].width = adjusted_width
+
+        filename = f"Reporte_Pedidos_Hoy_{datetime.now().strftime('%Y%m%d')}.xlsx"
+        wb.save(filename)
+
+        return send_file(filename, as_attachment=True)
+    except Exception as e:
+        return f"Error: {str(e)}"
+    finally:
+        session.close()
+
+## Reporte en pdf
 @app.route('/generar_reporte_pedidos_pdf')
 def generar_reporte_pedidos_pdf():
     session = Session()
@@ -483,5 +590,62 @@ def generar_reporte_pedidos_pdf():
     finally:
         session.close()
 
+@app.route('/generar_reporte_pedidos_hoy_pdf')
+def generar_reporte_pedidos_hoy_pdf():
+    session = Session()
+    try:
+        pedidos = session.query(Pedido).filter(Pedido.fecha == date.today()).all()
+        
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        elements = []
+
+        # Add logo
+        logo = PDFImage('static/img/logo.png', width=100, height=50)
+        elements.append(logo)
+
+        # Create table data
+        data = [['Fecha', 'Solicitante', 'Producto', 'Talla', 'Color', 'Cantidad']]
+        for pedido in pedidos:
+            data.append([
+                pedido.fecha.strftime('%Y-%m-%d'),
+                pedido.nombre_solicitante,
+                pedido.tipo_producto,
+                pedido.talla,
+                pedido.color or 'N/A',
+                pedido.cantidad
+            ])
+
+        # Create table
+        table = Table(data)
+        style = TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.blue),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 14),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 1), (-1, -1), 12),
+            ('TOPPADDING', (0, 1), (-1, -1), 6),
+            ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ])
+        table.setStyle(style)
+        elements.append(table)
+
+        # Build PDF
+        doc.build(elements)
+
+        buffer.seek(0)
+        return send_file(buffer, as_attachment=True, download_name='reporte_pedidos_hoy.pdf', mimetype='application/pdf')
+    except Exception as e:
+        return f"Error: {str(e)}"
+    finally:
+        session.close()
+##Fin --> declaración para ejecución de app.py
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

@@ -13,7 +13,7 @@
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Inicio</a></li>
-            <li><a href="{{ url_for('pedidos') }}">Ver Pedidos</a></li>
+            <li><a href="{{ url_for('pedidos') }}">Ver Todos los Pedidos</a></li>
         </ul>
     </nav>
     <main>
@@ -27,6 +27,26 @@
 
             <button type="submit">Registrar Pedidos</button>
         </form>
+
+        <h2>Pedidos de Hoy</h2>
+        <table id="tabla-pedidos-hoy">
+            <thead>
+                <tr>
+                    <th>Solicitante</th>
+                    <th>Producto</th>
+                    <th>Talla</th>
+                    <th>Color</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos de los pedidos se insertarán aquí dinámicamente -->
+            </tbody>
+        </table>
+
+        <a href="{{ url_for('generar_reporte_pedidos_hoy_excel') }}" class="button">Generar Reporte Excel</a>
+        <a href="{{ url_for('generar_reporte_pedidos_hoy_pdf') }}" class="button">Generar Reporte PDF</a>
     </main>
     <script src="{{ url_for('static', filename='js/registro_equipo.js') }}"></script>
 </body>
