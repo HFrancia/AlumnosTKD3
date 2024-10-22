@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Alumno</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Registrar Pago</title>
+    <link rel="stylesheet" href="{{   url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <header>
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logotipo de la escuela" class="logo" width = "800" height="341">
-        <h1>Registro de Alumno</h1>
+        <h1>Registrar Pago</h1>
     </header>
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Inicio</a></li>
             <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
+            <li><a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Detalle del Alumno</a></li>
+            <li><a href="{{ url_for('pagos', alumno_id=alumno.id) }}">Ver Pagos</a></li>
         </ul>
     </nav>
     <main>
+        <h2>Registrar Pago para {{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</h2>
         <form id="pago-form">
             <input type="hidden" name="alumno_id" value="{{ alumno.id }}">
-    
+
             <label for="fecha">Fecha:</label>
             <input type="date" id="fecha" name="fecha" required>
-    
+
             <label for="monto">Monto:</label>
             <input type="number" id="monto" name="monto" step="0.01" required>
-    
+
             <label for="concepto">Concepto:</label>
             <input type="text" id="concepto" name="concepto" required>
-    
-            <button type="submit">Registrar Pago</button>
 
-            <h3>Registrar Pago</h3>
+            <button type="submit">Registrar Pago</button>
         </form>
     </main>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos del Alumno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Pagos del Alumno</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
+            <li><a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Detalle del Alumno</a></li>
+            <li><a href="{{ url_for('pago', alumno_id=alumno.id) }}">Registrar Pago</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Pagos de {{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th>Concepto</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pago in pagos %}
+                <tr>
+                    <td>{{ pago.fecha }}</td>
+                    <td>{{ pago.monto }}</td>
+                    <td>{{ pago.concepto }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('generar_reporte_pagos', alumno_id=alumno.id) }}" class="button">Generar Reporte Excel</a>
+    </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

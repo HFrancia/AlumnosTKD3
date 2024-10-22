@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const formData = new FormData(pagoForm);
             const alumnoId = formData.get('alumno_id');
-            fetch(`/registrar_pago/${alumnoId}`, {
+            fetch(`/pago/${alumnoId}`, {
                 method: 'POST',
                 body: formData
             })
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Ocurrió un error al registrar el pago');
+                alert('Ocurrió un error al realizar el pago.');
             });
         });
     }
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Ocurrió un error al eliminar el alumno.');
+                        alert('Ocurrió un error al eliminar al alumno.');
                     });
                 }
             });

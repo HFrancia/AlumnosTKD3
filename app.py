@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, jsonify, send_file
-from sqlalchemy import Float, create_engine, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
-from openpyxl.styles import Font
 import os
+from openpyxl.styles import Font
 
 app = Flask(__name__)
 
@@ -48,9 +48,6 @@ Base.metadata.create_all(engine)
 def index():
     return render_template('index.html')
 
-@app.route('/')
-def registro_pagos():
-    return render_template('registro_pagos.html')
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -133,25 +130,40 @@ def eliminar_alumno(id):
     finally:
         session.close()
 
-@app.route('/registrar_pago/<int:alumno_id>', methods=['POST'])
-def registrar_pago(alumno_id):
+@app.route('/pago/<int:alumno_id>', methods=['GET', 'POST'])
+def pago(alumno_id): #redefinir variable a setpagos para identificar que es el metodo para aplicar pagos
     session = Session()
     try:
-        nuevo_pago = Pago(
-            alumno_id=alumno_id,
-            fecha=datetime.strptime(request.form['fecha'], '%Y-%m-%d').date(),
-            monto=float(request.form['monto']),
-            concepto=request.form['concepto']
-        )
-        session.add(nuevo_pago)
-        session.commit()
-        return jsonify({"success": True, "message": "Pago registrado correctamente"})
+        alumno = session.query(Alumno).get(alumno_id)
+        if request.method == 'POST':
+            nuevo_pago = Pago(
+                alumno_id=alumno_id,
+                fecha=datetime.strptime(request.form['fecha'], '%Y-%m-%d').date(),
+                monto=float(request.form['monto']),
+                concepto=request.form['concepto']
+            )
+            session.add(nuevo_pago)
+            session.commit()
+            return jsonify({"success": True, "message": "Pago registrado correctamente"})
+        return render_template('pago.html', alumno=alumno)
     except Exception as e:
         session.rollback()
         return jsonify({"success": False, "message": f"Error: {str(e)}"})
     finally:
         session.close()
 
+@app.route('/pagos/<int:alumno_id>')
+def pagos(alumno_id): #redefinit variable a getpagos para identificar que es el listado de pagos
+    session = Session()
+    try:
+        alumno = session.query(Alumno).get(alumno_id)
+        pagos = session.query(Pago).filter_by(alumno_id=alumno_id).all()
+        return render_template('pagos.html', alumno=alumno, pagos=pagos)
+    except Exception as e:
+        return f"Error: {str(e)}"
+    finally:
+        session.close()
+    
 @app.route('/generar_reporte')
 def generar_reporte():
     session = Session()
@@ -191,6 +203,51 @@ def generar_reporte():
             ws.append(r[1:])
 
         filename = f"Reporte_Alumnos_{datetime.now().strftime('%Y%m%d')}.xlsx"
+        wb.save(filename)
+
+        return send_file(filename, as_attachment=True)
+    except Exception as e:
+        return f"Error: {str(e)}"
+    finally:
+        session.close()
+
+@app.route('/generar_reporte_pagos/<int:alumno_id>')
+def generar_reporte_pagos(alumno_id):
+    session = Session()
+    try:
+        alumno = session.query(Alumno).get(alumno_id)
+        pagos = session.query(Pago).filter_by(alumno_id=alumno_id).all()
+        
+        df = pd.DataFrame([
+            {
+                'Fecha': p.fecha,
+                'Monto': p.monto,
+                'Concepto': p.concepto
+            } for p in pagos
+        ])
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Reporte de Pagos"
+
+        headers = ["Fecha Pago", "Total Pago Realizado", "Concepto del pago"]
+
+        img = Image('static/img/logo_excl.png')
+        ws.add_image(img, 'A1')
+        ws['A8'].font = Font(color = 'FF0000',bold=True, size=12) ## red
+        ws['A8'] = f"Alumno(a): {alumno.nombre} {alumno.apaterno} {alumno.apmaterno}"
+        ws['A9'].font = Font(color = '2e86c1',bold=True, size=12) ## red
+        ws.append(headers) 
+        #img = Image('static/img/logo.png')
+        #ws.add_image(img, 'A1')
+
+        #ws['A3'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
+        
+
+        for r in pd.DataFrame(df).itertuples():
+            ws.append(r[1:])
+
+        filename = f"Reporte_Pagos_{alumno.nombre}_{alumno.apaterno}_{datetime.now().strftime('%Y%m%d')}.xlsx"
         wb.save(filename)
 
         return send_file(filename, as_attachment=True)
