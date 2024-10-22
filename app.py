@@ -7,7 +7,8 @@ import pandas as pd
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
 import os
-from openpyxl.styles import Font
+from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.utils import get_column_letter
 
 app = Flask(__name__)
 
@@ -190,17 +191,43 @@ def generar_reporte():
         ws = wb.active
         ws.title = "Reporte de Alumnos"
 
-        headers = ["No", "Apellido Paterno", "Apellido Materno", "Nombre", "Fecha de Nacimiento", "Curp",
-                    "Calle","Número","Colonia","E-Mail","Teléfono","Número de Afiliacion"]
-
+        # Add logo
         img = Image('static/img/logo_excl.png')
-        ws.add_image(img, 'A1')
+        img.width = 470  # Adjust as needed
+        img.height = 80  # Adjust as needed
+        ws.add_image(img, 'I1')
 
-        ws['A8'] = ""
-        ws.append(headers) 
-        
-        for r in pd.DataFrame(df).itertuples():
-            ws.append(r[1:])
+        # Merge cells for the logo
+        ws.merge_cells('I1:L4')
+
+        # Add generation date
+        #ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
+
+        # Write headers
+        headers = list(df.columns)
+        for col, header in enumerate(headers, start=1):
+            cell = ws.cell(row=5, column=col, value=header)
+            cell.font = Font(color="FFFFFF", bold=True)
+            cell.fill = PatternFill(start_color="000080", end_color="000080", fill_type="solid")
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+
+        # Write data
+        for r, row in enumerate(df.values, start=6):
+            for c, value in enumerate(row, start=1):
+                ws.cell(row=r, column=c, value=value)
+
+        # Adjust column widths
+        for column in ws.columns:
+            max_length = 0
+            column_letter = get_column_letter(column[0].column)
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(cell.value)
+                except:
+                    pass
+            adjusted_width = (max_length + 2) * 1.2
+            ws.column_dimensions[column_letter].width = adjusted_width
 
         filename = f"Reporte_Alumnos_{datetime.now().strftime('%Y%m%d')}.xlsx"
         wb.save(filename)
@@ -220,7 +247,7 @@ def generar_reporte_pagos(alumno_id):
         
         df = pd.DataFrame([
             {
-                'Fecha': p.fecha,
+                'Fecha Pago': p.fecha,
                 'Monto': p.monto,
                 'Concepto': p.concepto
             } for p in pagos
@@ -230,22 +257,40 @@ def generar_reporte_pagos(alumno_id):
         ws = wb.active
         ws.title = "Reporte de Pagos"
 
-        headers = ["Fecha Pago", "Total Pago Realizado", "Concepto del pago"]
-
-        img = Image('static/img/logo_excl.png')
+        # Add logo
+        img = Image('static/img/logo.png')
+        img.width = 270  # Adjust as needed
+        img.height = 80  # Adjust as needed
         ws.add_image(img, 'A1')
-        ws['A8'].font = Font(color = 'FF0000',bold=True, size=12) ## red
-        ws['A8'] = f"Alumno(a): {alumno.nombre} {alumno.apaterno} {alumno.apmaterno}"
-        ws['A9'].font = Font(color = '2e86c1',bold=True, size=12) ## red
-        ws.append(headers) 
-        #img = Image('static/img/logo.png')
-        #ws.add_image(img, 'A1')
 
-        #ws['A3'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
-        
+        # Merge cells for the logo
+        ws.merge_cells('A1:A3')
 
-        for r in pd.DataFrame(df).itertuples():
-            ws.append(r[1:])
+        # Write headers
+        headers = list(df.columns)
+        for col, header in enumerate(headers, start=1):
+            cell = ws.cell(row=5, column=col, value=header)
+            cell.font = Font(color="FFFFFF", bold=True)
+            cell.fill = PatternFill(start_color="000080", end_color="000080", fill_type="solid")
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+
+        # Write data
+        for r, row in enumerate(df.values, start=6):
+            for c, value in enumerate(row, start=1):
+                ws.cell(row=r, column=c, value=value)
+
+        # Adjust column widths
+        for column in ws.columns:
+            max_length = 0
+            column_letter = get_column_letter(column[0].column)
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(cell.value)
+                except:
+                    pass
+            adjusted_width = (max_length + 2) * 1.2
+            ws.column_dimensions[column_letter].width = adjusted_width
 
         filename = f"Reporte_Pagos_{alumno.nombre}_{alumno.apaterno}_{datetime.now().strftime('%Y%m%d')}.xlsx"
         wb.save(filename)
