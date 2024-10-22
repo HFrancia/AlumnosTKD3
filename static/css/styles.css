@@ -108,3 +108,29 @@ th {
         width: 100%;
     }
 }
+
+/* Add these styles to the existing CSS file */
+
+#tallas-container div {
+    margin-bottom: 10px;
+}
+
+#tallas-container label,
+#tallas-container input {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#color-container {
+    margin-top: 20px;
+}
+
+#buscar-pedidos-form {
+    margin-bottom: 20px;
+}
+
+#buscar-pedidos-form label,
+#buscar-pedidos-form input,
+#buscar-pedidos-form button {
+    margin-right: 10px;
+}

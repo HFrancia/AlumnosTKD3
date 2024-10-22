@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Equipo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Registro de Equipo</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('pedidos') }}">Ver Pedidos</a></li>
+        </ul>
+    </nav>
+    <main>
+        <form id="registro-equipo-form">
+            <label for="nombre_solicitante">Nombre del Solicitante:</label>
+            <input type="text" id="nombre_solicitante" name="nombre_solicitante" required>
+
+            <label for="tipo_producto">Tipo de Producto:</label>
+            <select id="tipo_producto" name="tipo_producto" required>
+                <option value="">Seleccione un producto</option>
+                <option value="careta">Careta</option>
+                <option value="uniforme">Uniforme</option>
+                <option value="antebraceras">Antebraceras</option>
+                <option value="coderas">Coderas</option>
+                <option value="espinilleras">Espinilleras</option>
+            </select>
+
+            <div id="tallas-container"></div>
+
+            <div id="color-container" style="display: none;">
+                <label for="color">Color:</label>
+                <input type="text" id="color" name="color">
+            </div>
+
+            <label for="costo_total">Costo Total:</label>
+            <input type="number" id="costo_total" name="costo_total" step="0.01" required>
+
+            <button type="submit">Registrar Pedido</button>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='js/registro_equipo.js') }}"></script>
+</body>
+</html>
