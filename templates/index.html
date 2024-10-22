@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Registro de Alumnos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Registro de Alumnos</h1>
+    </header>
+    <nav>
+        <h2>Bienvenido al Sistema de Registro de Alumnos</h2>
+        <h3>Seleccione una opción del menú para comenzar.</h3>
+        <ul>
+            <li><a href="{{ url_for('registro') }}">Registrar Alumno</a></li>
+            <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
+        </ul>
+    </nav>
+    <main>
+        <!--
+         <h2>Bienvenido al Sistema de Registro de Alumnos</h2>
+        <p>Seleccione una opción del menú para comenzar.</p>
+        -->
+    </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

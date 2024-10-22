@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Alumno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Registro de Alumno</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
+        </ul>
+    </nav>
+    <main>
+        <form id="registro-form">
+            <label for="apaterno">Apellido Paterno:</label>
+            <input type="text" id="apaterno" name="apaterno" maxlength="50" placeholder = "Apellido Paterno" required>
+
+            <label for="apmaterno">Apellido Materno:</label>
+            <input type="text" id="apmaterno" name="apmaterno" maxlength="50" placeholder = "Apellido Materno" required>
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" maxlength="30" placeholder = "Nombre del Alumno" required>
+
+            <label for="fbday">Fecha de Nacimiento:</label>
+            <input type="date" id="fbday" name="fbday" placeholder = "Fecha de Nacimiento" required>
+
+            <label for="curp">CURP:</label>
+            <input type="text" id="curp" name="curp" maxlength="18" placeholder="CURP" pattern="^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z]{2}$">
+
+            <label for="calle">Calle:</label>
+            <input type="text" id="calle" name="calle" placeholder="Calle del domicilio" required>
+
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" name="numero" maxlength="4" placeholder = "Número de la casa" required>
+
+            <label for="colonia">Colonia:</label>
+            <input type="text" id="colonia" name="colonia" placeholder="Colonia del domicilio" required>
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" placeholder="Correo Electrónico" required>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" maxlength="10" placeholder="Número Telefónico" pattern="[0-9]{10}">
+
+            <label for="numafiliacion">Número de Afiliación:</label>
+            <input type="text" id="numafiliacion" name="numafiliacion" maxlength="16" placeholder = "Número Afiliación Alumno" required>
+
+            <label for="estatus">Estatus:</label>
+            <select id="estatus" name="estatus" required>
+                <option value="">Seleccione un estatus</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+                <option value="baja">Baja</option>
+            </select>
+
+            <button type="submit">Registrar Alumno</button>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Alumnos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Lista de Alumnos</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('registro') }}">Registrar Alumno</a></li>
+        </ul>
+    </nav>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>No Afiliación</th>
+                    <th>Teléfono</th>
+                    <th>Estatus</th>
+                    <th>Desalle Alumno</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alumno in alumnos %}
+                <tr>
+                    <td>{{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</td>
+                    <td>{{ alumno.numafiliacion }}</td>
+                    <td>{{ alumno.telefono }}</td>
+                    <td>{{ alumno.estatus }}</td>
+                    <td>
+                        <a href="{{ url_for('detalle_alumno', id=alumno.id) }}">Ver detalles</a>
+                        <!-- <button class="eliminar-alumno" data-id="{{ alumno.id }}" >Eliminar</button> -->
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('generar_reporte') }}" class="button">Generar Reporte Excel</a>
+    </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

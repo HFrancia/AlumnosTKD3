@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de  Alumno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Detalle de Alumno</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('lista_alumnos') }}">Ver Alumnos</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>{{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.apmaterno }}</h2>
+        <p>Estatus: {{ alumno.estatus }}</p>
+        <form id="editar-form">
+            <input type="hidden" name="id" value="{{ alumno.id }}">
+
+            <label for="apaterno">Apellido Paterno:</label>
+            <input type="text" id="apaterno" name="apaterno" value="{{ alumno.apaterno }}" maxlength="50" placeholder = "Apellido Paterno" required>
+
+            <label for="apmaterno">Apellido Materno:</label>
+            <input type="text" id="apmaterno" name="apmaterno" value="{{ alumno.apmaterno }}" maxlength="50" placeholder = "Apellido Materno" required>
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{ alumno.nombre }}" maxlength="30" placeholder = "Nombre del Alumno" required>
+
+            <label for="fbday">Fecha de Nacimiento:</label>
+            <input type="date" id="fbday" name="fbday" value="{{ alumno.fbday }}" placeholder = "Fecha de Nacimiento" required>
+
+            <label for="curp">CURP:</label>
+            <input type="text" id="curp" name="curp" value="{{ alumno.curp }}" maxlength="18" placeholder="CURP" required pattern="^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z]{2}$">
+
+            <label for="calle">Calle:</label>
+            <input type="text" id="calle" name="calle" value="{{ alumno.calle }}" placeholder="Calle del domicilio" required>
+
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" name="numero" value="{{ alumno.numero }}" maxlength="4" placeholder = "Número de la casa" required>
+
+            <label for="colonia">Colonia:</label>
+            <input type="text" id="colonia" name="colonia" value="{{ alumno.colonia }}" placeholder="Colonia del domicilio" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ alumno.email }}" placeholder="Correo Electrónico" required>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" value="{{ alumno.telefono }}" maxlength="10" placeholder="Número Telefónico"  required pattern="[0-9]{10}">
+
+            <label for="numafiliacion">Número de Afiliación:</label>
+            <input type="text" id="numafiliacion" name="numafiliacion" value="{{ alumno.numafiliacion }}" maxlength="16" placeholder = "Número Afiliación Alumno" required>
+
+            <label for="estatus">Estatus:</label>
+            <select id="estatus" name="estatus" required>
+                <option value="">Seleccione un estatus</option>
+                <option value="activo" {% if alumno.estatus == 'activo' %}selected{% endif %}>Activo</option>
+                <option value="inactivo" {% if alumno.estatus == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                <option value="baja" {% if alumno.estatus == 'baja' %}selected{% endif %}>Baja</option>
+            </select>
+
+            <button type="submit">Actualizar Alumno</button>
+        </form>
+
+        <h3>Registrar Pago</h3>
+        <form id="pago-form">
+            <input type="hidden" name="alumno_id" value="{{ alumno.id }}">
+
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+
+            <label for="monto">Monto:</label>
+            <input type="number" id="monto" name="monto" step="0.01" required>
+
+            <label for="concepto">Concepto:</label>
+            <input type="text" id="concepto" name="concepto" required>
+
+            <button type="submit">Registrar Pago</button>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
