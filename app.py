@@ -60,7 +60,7 @@ class Pedido(Base):
 
 Base.metadata.create_all(engine)
 
-@app.route('/sistema_de_alumnos')
+@app.route('/')
 def index():
     return render_template('index.html')
 

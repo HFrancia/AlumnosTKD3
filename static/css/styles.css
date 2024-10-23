@@ -1,3 +1,5 @@
+onCommand:extension.uncssFile
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -234,7 +236,7 @@ th {
 
 
 /* Agregar estos estilos a tu archivo CSS existente */
-
+/*
 .logo {
     max-width: 200px;
     margin-bottom: 20px;
@@ -261,7 +263,7 @@ th {
     max-width: 500px;
     text-align: center;
 }
-
+*/
 .notificacion {
     padding: 10px;
     margin-bottom: 15px;
