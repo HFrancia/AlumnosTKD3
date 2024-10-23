@@ -281,8 +281,8 @@ def generar_reporte():
 
         # Add logo
         img = Image('static/img/logo_excl.png')
-        img.width = 470  # Adjust as needed
-        img.height = 80  # Adjust as needed
+        img.width = 440  # Adjust as needed
+        img.height = 100  # Adjust as needed
         ws.add_image(img, 'I1')
 
         # Merge cells for the logo
@@ -294,13 +294,13 @@ def generar_reporte():
         # Write headers
         headers = list(df.columns)
         for col, header in enumerate(headers, start=1):
-            cell = ws.cell(row=5, column=col, value=header)
+            cell = ws.cell(row=6, column=col, value=header)
             cell.font = Font(color="FFFFFF", bold=True)
             cell.fill = PatternFill(start_color="000080", end_color="000080", fill_type="solid")
             cell.alignment = Alignment(horizontal="center", vertical="center")
 
         # Write data
-        for r, row in enumerate(df.values, start=6):
+        for r, row in enumerate(df.values, start=7):
             for c, value in enumerate(row, start=1):
                 ws.cell(row=r, column=c, value=value)
 
@@ -412,26 +412,26 @@ def generar_reporte_pedidos_excel():
 
         # Add logo
         img = Image('static/img/logo.png')
-        img.width = 300
+        img.width = 400
         img.height = 100
         ws.add_image(img, 'A1')
 
         # Merge cells for the logo
-        ws.merge_cells('A1:D4')
+        ws.merge_cells('A1:D5')
 
         # Add generation date
-        ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
+        #ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
 
         # Write headers
         headers = list(df.columns)
         for col, header in enumerate(headers, start=1):
-            cell = ws.cell(row=5, column=col, value=header)
+            cell = ws.cell(row=6, column=col, value=header)
             cell.font = Font(color="FFFFFF", bold=True)
             cell.fill = PatternFill(start_color="000080", end_color="000080", fill_type="solid")
             cell.alignment = Alignment(horizontal="center", vertical="center")
 
         # Write data
-        for r, row in enumerate(df.values, start=6):
+        for r, row in enumerate(df.values, start=7):
             for c, value in enumerate(row, start=1):
                 ws.cell(row=r, column=c, value=value)
 
@@ -445,7 +445,7 @@ def generar_reporte_pedidos_excel():
                         max_length = len(cell.value)
                 except:
                     pass
-            adjusted_width = (max_length + 2) * 1.2
+            adjusted_width = (max_length + 2) * 1.8
             ws.column_dimensions[column_letter].width = adjusted_width
 
         filename = f"Reporte_Pedidos_{datetime.now().strftime('%Y%m%d')}.xlsx"
@@ -480,26 +480,26 @@ def generar_reporte_pedidos_hoy_excel():
 
         # Add logo
         img = Image('static/img/logo.png')
-        img.width = 300
+        img.width = 320
         img.height = 100
         ws.add_image(img, 'A1')
 
         # Merge cells for the logo
-        ws.merge_cells('A1:D4')
+        ws.merge_cells('A1:D5')
 
         # Add generation date
-        ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
+        #ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
 
         # Write headers
         headers = list(df.columns)
         for col, header in enumerate(headers, start=1):
-            cell = ws.cell(row=5, column=col, value=header)
+            cell = ws.cell(row=6, column=col, value=header)
             cell.font = Font(color="FFFFFF", bold=True)
             cell.fill = PatternFill(start_color="000080", end_color="000080", fill_type="solid")
             cell.alignment = Alignment(horizontal="center", vertical="center")
 
         # Write data
-        for r, row in enumerate(df.values, start=6):
+        for r, row in enumerate(df.values, start=7):
             for c, value in enumerate(row, start=1):
                 ws.cell(row=r, column=c, value=value)
 
@@ -513,7 +513,7 @@ def generar_reporte_pedidos_hoy_excel():
                         max_length = len(cell.value)
                 except:
                     pass
-            adjusted_width = (max_length + 2) * 1.2
+            adjusted_width = (max_length + 2) * 1.8
             ws.column_dimensions[column_letter].width = adjusted_width
 
         filename = f"Reporte_Pedidos_Hoy_{datetime.now().strftime('%Y%m%d')}.xlsx"

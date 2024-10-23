@@ -9,7 +9,7 @@
 <body>
     <header>
         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
-        <h1>Registro de Equipo</h1>
+        <h1>Realizar pedido de equipo</h1>
     </header>
     <nav>
         <ul>
@@ -46,7 +46,7 @@
             </tbody>
         </table>
 
-        <a href="{{ url_for('generar_reporte_pedidos_hoy_excel') }}" class="button">Generar Reporte Excel</a>
+        <a href="{{ url_for('generar_reporte_pedidos_hoy_excel') }}" class="button">Generar Reporte de pedido Excel</a>
         <a href="{{ url_for('generar_reporte_pedidos_hoy_pdf') }}" class="button">Generar Reporte PDF</a>
     </main>
     <script src="{{ url_for('static', filename='js/registro_equipo.js') }}"></script>

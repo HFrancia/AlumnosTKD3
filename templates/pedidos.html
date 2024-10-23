@@ -14,7 +14,7 @@
     <nav>
         <ul>
             <li><a href="{{ url_for('index') }}">Inicio</a></li>
-            <li><a href="{{ url_for('registro_equipo') }}">Registrar Equipo</a></li>
+            <li><a href="{{ url_for('registro_equipo') }}">Realizar nuevo pedido</a></li>
             <li><a href="{{ url_for('pedidos') }}">Historial de Pedidos</a></li>
         </ul>
     </nav>
@@ -48,7 +48,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{{ url_for('generar_reporte_pedidos_excel') }}" class="button">Generar Reporte Excel</a>
+        <a href="{{ url_for('generar_reporte_pedidos_excel') }}" class="button">Generar Reporte de pedidos del día</a>
         <a href="{{ url_for('generar_reporte_pedidos_pdf') }}" class="button">Generar Reporte PDF</a>
     </main>
     <div id="confirmacion-modal" class="modal">
