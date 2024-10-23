@@ -8,10 +8,10 @@
 </head>
 <body>
     <header>
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logotipo de la escuela" class="logo" width = "800" height="341">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logotipo de la escuela" class="logo">
         <h1>Sistema de Registro de Alumnos</h1>
     </header>
-    <nav>
+     <nav>
         <h2>Bienvenido al Sistema de Alta para nuevos Alumnos</h2>
         <h3>Seleccione una opción del menú para comenzar.</h3>
         <ul>
@@ -20,6 +20,7 @@
             <li><a href="{{ url_for('ingresar_pedido') }}">Realizar Pedido</a></li>
         </ul>
     </nav>
+
     <main>
         <!--
          <h2>Bienvenido al Sistema de Registro de Alumnos</h2>
