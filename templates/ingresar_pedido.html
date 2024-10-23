@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Equipo</title>
+    <title>Capturar nuevo pedido</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <header>
         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
-        <h1>Realizar pedido de equipo</h1>
+        <h1>Capturar nuevo pedido</h1>
     </header>
     <nav>
         <ul>
-            <li><a href="{{ url_for('index') }}">Regresar al Inicio</a></li>
-            <li><a href="{{ url_for('pedidos') }}">Ver Todos los Pedidos</a></li>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
+            <li><a href="{{ url_for('pedidos') }}">Historial de Pedidos</a></li>
         </ul>
     </nav>
     <main>
-        <form id="registro-equipo-form">
+        <div id="notificacion" class="notificacion"></div>
+        <form id="ingresar-pedido-form">
             <label for="nombre_solicitante">Nombre del Solicitante:</label>
             <input type="text" id="nombre_solicitante" name="nombre_solicitante" required>
 
@@ -45,10 +46,15 @@
                 <!-- Los datos de los pedidos se insertarán aquí dinámicamente -->
             </tbody>
         </table>
-
-        <a href="{{ url_for('generar_reporte_pedidos_hoy_excel') }}" class="button">Generar Reporte de pedido Excel</a>
-        <a href="{{ url_for('generar_reporte_pedidos_hoy_pdf') }}" class="button">Generar Reporte PDF</a>
+        <a href="{{ url_for('generar_reporte_pedidos_hoy_excel') }}" class="button">Generar Reporte de pedido de hoy</a>
     </main>
-    <script src="{{ url_for('static', filename='js/registro_equipo.js') }}"></script>
+    <div id="confirmacion-modal" class="modal">
+        <div class="modal-content">
+            <p>¿Estás seguro de que quieres eliminar este pedido?</p>
+            <button id="confirmar-eliminar">Sí, eliminar</button>
+            <button id="cancelar-eliminar">Cancelar</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/ingresar_pedido.js') }}"></script>
 </body>
 </html>

@@ -60,11 +60,11 @@ class Pedido(Base):
 
 Base.metadata.create_all(engine)
 
-@app.route('/')
+@app.route('/sistema_de_alumnos')
 def index():
     return render_template('index.html')
 
-@app.route('/registro', methods=['GET', 'POST'])
+@app.route('/nuevo_alumno', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
         session = Session()
@@ -93,8 +93,8 @@ def registro():
             session.close()
     return render_template('registro.html')
 
-@app.route('/registro_equipo', methods=['GET', 'POST'])
-def registro_equipo():
+@app.route('/captura_pedido', methods=['GET', 'POST'])
+def ingresar_pedido():
     if request.method == 'POST':
         session = Session()
         try:
@@ -116,14 +116,13 @@ def registro_equipo():
             return jsonify({"success": False, "message": f"Error: {str(e)}"})
         finally:
             session.close()
-    return render_template('registro_equipo.html')
+    return render_template('ingresar_pedido.html')
 
-# """
 @app.route('/pedidos_hoy', methods=['GET'])
 def pedidos_hoy():
     session = Session()
     try:
-        pedidos = session.query(Pedido).filter(Pedido.fecha == date.today()).all()
+        pedidos = session.query(Pedido).filter(Pedido.fecha == datetime.now().date()).all()
         return jsonify([{
             "id": pedido.id,
             "fecha": pedido.fecha.strftime('%Y-%m-%d'),
@@ -149,7 +148,7 @@ def pedidos():
     finally:
         session.close()
 
-@app.route('/alumnos')
+@app.route('/consulta_alumnos')
 def lista_alumnos():
     session = Session()
     try:
@@ -160,7 +159,7 @@ def lista_alumnos():
     finally:
         session.close()
 
-@app.route('/alumno/<int:id>', methods=['GET', 'POST'])
+@app.route('/actualizar_alumno/<int:id>', methods=['GET', 'POST'])
 def detalle_alumno(id):
     session = Session()
     try:
@@ -218,7 +217,7 @@ def eliminar_pedido(pedido_id):
     finally:
         session.close()
 
-@app.route('/pago/<int:alumno_id>', methods=['GET', 'POST'])
+@app.route('/registrar_nuevo_pago/<int:alumno_id>', methods=['GET', 'POST'])
 def pago(alumno_id): #redefinir variable a setpagos para identificar que es el metodo para aplicar pagos
     session = Session()
     try:
@@ -240,7 +239,7 @@ def pago(alumno_id): #redefinir variable a setpagos para identificar que es el m
     finally:
         session.close()
 
-@app.route('/pagos/<int:alumno_id>')
+@app.route('/consulta_de_pagos/<int:alumno_id>')
 def pagos(alumno_id): #redefinit variable a getpagos para identificar que es el listado de pagos
     session = Session()
     try:
@@ -412,12 +411,12 @@ def generar_reporte_pedidos_excel():
 
         # Add logo
         img = Image('static/img/logo.png')
-        img.width = 400
+        img.width = 480
         img.height = 100
-        ws.add_image(img, 'A1')
+        ws.add_image(img, 'B1')
 
         # Merge cells for the logo
-        ws.merge_cells('A1:D5')
+        ws.merge_cells('A1:F5')
 
         # Add generation date
         #ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
@@ -480,12 +479,12 @@ def generar_reporte_pedidos_hoy_excel():
 
         # Add logo
         img = Image('static/img/logo.png')
-        img.width = 320
+        img.width = 480
         img.height = 100
-        ws.add_image(img, 'A1')
+        ws.add_image(img, 'B1')
 
         # Merge cells for the logo
-        ws.merge_cells('A1:D5')
+        ws.merge_cells('A1:F5')
 
         # Add generation date
         #ws['E1'] = f"Fecha de generación: {datetime.now().strftime('%Y-%m-%d')}"
